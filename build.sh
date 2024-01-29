@@ -1,11 +1,12 @@
 #!/bin/sh
 
-targetOS=linux
 targetARCH=amd64
 cmd=auth-server
 repository=rhzx3519/auth-server
 workdir=build
+
 isdocker=$1
+targetOS=${2:-linux}
 
 GOOS=$targetOS GOARCH=$targetARCH go build -o bin/$cmd main/main.go
 

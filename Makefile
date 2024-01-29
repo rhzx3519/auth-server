@@ -2,8 +2,9 @@ SHELL=/bin/bash
 
 .PHONY: build clean dist clean-images
 docker=
+os=
 build: clean
-	sh build.sh $(docker)
+	sh build.sh $(docker) $(os)
 
 clean:
 	rm -fr ./build
@@ -23,9 +24,11 @@ dist:
 	cp .env dist/
 	cp compose.yaml dist/
 
+docker=
 run:
-	./bin/auth-server
-
-run-docker:
+ifdef docker
 	docker compose up --force-recreate
+else
+	./bin/auth-server
+endif
 
