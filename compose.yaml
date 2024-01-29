@@ -20,4 +20,4 @@ services:
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
-      retries: 5
+      retries: 2

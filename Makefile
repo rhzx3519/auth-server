@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 
-.PHONY: build clean dist
+.PHONY: build clean dist clean-images
 docker=
 build: clean
 	sh build.sh $(docker)
@@ -11,6 +11,9 @@ clean:
 	rm -fr ./dist
 	mkdir -p ./build
 	docker compose rm -f
+
+clean-images:
+	docker rmi -f $(docker images | awk 'NR>1{if($2=="<none>")print$3}')
 
 dist:
 	rm -fr dist/
@@ -25,5 +28,4 @@ run:
 
 run-docker:
 	docker compose up --force-recreate
-	#docker compose rm -f
 
