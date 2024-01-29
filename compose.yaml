@@ -1,0 +1,23 @@
+version: "3.5"
+services:
+  auth-server:
+    image: "${repository}:latest"
+    ports:
+      - "8082:8081"
+    depends_on:
+#      - mysql
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: "mysql:8.1.0"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    ports:
+      - "3307:3306"
+    volumes:
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/init.sql"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 5

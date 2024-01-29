@@ -7,12 +7,8 @@ import (
 	"github.com/rhzx3519/auth-server/persistance/mysql"
 )
 
-var (
-	db = mysql.DB
-)
-
 func GetUserbyEmailAndPassword(email, password string) (domain.User, error) {
-	row := db.QueryRow("SELECT * FROM users WHERE email = ? and password = ?", email, password)
+	row :=  mysql.DB.QueryRow("SELECT * FROM users WHERE email = ? and password = ?", email, password)
 	// Loop through rows, using Scan to assign column data to struct fields.
 	var user domain.User
 	if err := row.Scan(&user.ID, &user.Email, &user.Nickname, &user.Password); err != nil {

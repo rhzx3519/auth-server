@@ -19,16 +19,17 @@ func getenv(key, defaultValue string) string {
 	return defaultValue
 }
 
-func init() {
-	// init config
+func InitDB() {
+	// InitDB config
 	cfg := mysql.Config{
 		User:                 getenv("DBUSER", "root"),
 		Passwd:               getenv("DBPASS", ""),
 		Net:                  "tcp",
-		Addr:                 "127.0.0.1:3306",
+		Addr:                 fmt.Sprintf("%s:%s", getenv("DBHOST", "127.0.0.1"), getenv("DBPORT", "3306")),
 		DBName:               "demo-brokers",
 		AllowNativePasswords: true,
 	}
+	fmt.Println(cfg.FormatDSN())
 	// Get a DB handler
 	var err error
 	DB, err = sql.Open("mysql", cfg.FormatDSN())

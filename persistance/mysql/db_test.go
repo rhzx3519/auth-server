@@ -4,4 +4,6 @@ import (
 	"testing"
 )
 
-func TestInitDBConnection(t *testing.T) {}
+func TestInitDBConnection(t *testing.T) {
+	init()
+}

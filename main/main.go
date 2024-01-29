@@ -5,13 +5,20 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/rhzx3519/auth-server/controllers/auth"
+	"github.com/rhzx3519/auth-server/persistance/mysql"
+	"log"
 	"net/http"
 	"os"
 )
 
 func init() {
-	godotenv.Load()
-	fmt.Println(os.Getenv("DBUSER"), os.Getenv("DBPASS"))
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	fmt.Println(os.Getenv("DPHOST"), os.Getenv("DBPASS"))
+
+	mysql.InitDB()
 }
 
 // This is used to avoid cors(request different domains) problem from the client
