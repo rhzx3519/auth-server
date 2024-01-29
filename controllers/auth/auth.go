@@ -2,7 +2,9 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rhzx3519/auth-server/persistance/user"
 	"github.com/rhzx3519/auth-server/utils/jwt"
+	"github.com/rhzx3519/auth-server/utils/salt"
 	"net/http"
 )
 
@@ -40,8 +42,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-
-	if json.Email != "admin@gmail.com" || json.Password != "123456" {
+	if _, err := user.GetUserbyEmailAndPassword(json.Email, salt.MD5(json.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
 		return
 	}

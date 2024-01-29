@@ -1,10 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/rhzx3519/auth-server/controllers/auth"
 	"net/http"
+	"os"
 )
+
+func init() {
+	godotenv.Load()
+	fmt.Println(os.Getenv("DBUSER"), os.Getenv("DBPASS"))
+}
 
 // This is used to avoid cors(request different domains) problem from the client
 func corsHeader(c *gin.Context) {
