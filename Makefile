@@ -32,3 +32,5 @@ else
 	./bin/auth-server
 endif
 
+push:
+	docker push rhzx3519/auth-server:latest
