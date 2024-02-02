@@ -6,10 +6,10 @@ repository=rhzx3519/auth-server
 workdir=build
 
 isdocker=$1
-targetPlatform=${2:-amd64}
-targetOS=${3:-linux}
+arch=${2:-amd64}
+os=${3:-linux}
 
-GOOS=$targetOS GOARCH=$targetARCH go build -o bin/$cmd main/main.go
+GOOS=$os GOARCH=$targetARCH go build -o bin/$cmd main/main.go
 
 cp .env $workdir
 cp ./bin/$cmd $workdir
@@ -19,4 +19,4 @@ if [ $isdocker ]; then
 fi
 cd $workdir
 
-docker build --platform=linux/$targetPlatform  -t ${repository}:latest .
+docker build --platform=$os/$arch  -t ${repository}:latest .
