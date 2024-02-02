@@ -2,9 +2,10 @@ SHELL=/bin/bash
 
 .PHONY: build clean dist clean-images
 docker=
+platform=
 os=
 build: clean
-	sh build.sh $(docker) $(os)
+	sh build.sh $(docker) $(platform) $(os)
 
 clean:
 	rm -fr ./build
