@@ -5,8 +5,6 @@ WORKDIR /app
 COPY auth-server ./
 COPY .env ./
 
-RUN chmod +x ./auth-server
-
 EXPOSE 80
 
-ENTRYPOINT ["./auth-server"]
+ENTRYPOINT ["/app/auth-server"]
