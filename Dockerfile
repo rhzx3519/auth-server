@@ -5,6 +5,6 @@ WORKDIR /app
 COPY auth-server ./
 COPY .env ./
 
-EXPOSE 8081
+EXPOSE 80
 
 ENTRYPOINT ["./auth-server"]
