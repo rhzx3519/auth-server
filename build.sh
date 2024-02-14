@@ -19,4 +19,6 @@ if [ $isdocker ]; then
 fi
 cd $workdir
 
+ls -al ./
+
 docker build --platform=$os/$arch  -t ${repository}:latest .
