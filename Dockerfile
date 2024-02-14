@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
 WORKDIR /app
 
@@ -7,4 +7,4 @@ COPY .env ./
 
 EXPOSE 80
 
-ENTRYPOINT ["/app/auth-server"]
+ENTRYPOINT ["./auth-server"]
