@@ -32,7 +32,13 @@ func Verify(c *gin.Context) {
         c.Abort()
         return
     }
-    c.Header("Auth-User-No", claims["no"].(string))
+    if _, ok := claims["no"]; !ok {
+        fmt.Printf("error, cannot find necessary information from  token.")
+        c.Abort()
+        return
+    }
+    // Set user info in the request's header
+    c.Request.Header.Set("Auth-User-No", claims["no"].(string))
 }
 
 type LoginData struct {
