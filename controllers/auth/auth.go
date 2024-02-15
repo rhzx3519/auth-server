@@ -10,7 +10,7 @@ import (
     "net/http"
 )
 
-func AuthRequired(c *gin.Context) {
+func Verify(c *gin.Context) {
     fmt.Printf("X-Original-URI: %v, X-Original-METHOD: %v\n",
         c.GetHeader("X-Original-URI"), c.GetHeader("X-Original-METHOD"))
     tokenString := c.GetHeader("Authorization")
@@ -23,7 +23,8 @@ func AuthRequired(c *gin.Context) {
         return
     }
     tokenString = tokenString[len("Bearer "):]
-    if err := jwt.Verify(tokenString); err != nil {
+    claims, err := jwt.Verify(tokenString)
+    if err != nil {
         c.JSON(http.StatusUnauthorized, gin.H{
             "status":  "unauthorized",
             "message": "Invalid token",
@@ -31,6 +32,7 @@ func AuthRequired(c *gin.Context) {
         c.Abort()
         return
     }
+    c.Header("Auth-User-No", claims["no"].(string))
 }
 
 type LoginData struct {
@@ -60,7 +62,7 @@ func Login(c *gin.Context) {
         return
     }
 
-    tokenString, err := jwt.Sign(json.Email)
+    tokenString, err := jwt.Sign(user.Email, user.No)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
     }

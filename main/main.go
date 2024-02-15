@@ -53,9 +53,9 @@ func main() {
         })
 
         v1.POST("/login", auth.Login)
-        v1.Any("/verify", auth.AuthRequired)
+        v1.Any("/verify", auth.Verify)
 
-        authorized := v1.Group("/", auth.AuthRequired)
+        authorized := v1.Group("/", auth.Verify)
         {
             authorized.GET("/testauth", func(c *gin.Context) {
                 c.JSON(http.StatusOK, gin.H{
