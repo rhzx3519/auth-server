@@ -1,6 +1,7 @@
 package auth
 
 import (
+    "encoding/json"
     "fmt"
     "github.com/gin-gonic/gin"
     "github.com/rhzx3519/auth-server/domain"
@@ -33,12 +34,18 @@ func Verify(c *gin.Context) {
         return
     }
     if _, ok := claims["no"]; !ok {
-        fmt.Printf("error, cannot find necessary information from  token.")
+        fmt.Println("error, cannot find necessary information from  token.")
         c.Abort()
         return
     }
     // Set user info in the request's header
-    c.Request.Header.Set("Auth-User-No", claims["no"].(string))
+    var claimsJson []byte
+    if claimsJson, err = json.Marshal(claims); err != nil {
+        fmt.Println("failed to marshal claims", err)
+        c.Abort()
+        return
+    }
+    c.Header("X-Forwarded-User", string(claimsJson))
 }
 
 type LoginData struct {
