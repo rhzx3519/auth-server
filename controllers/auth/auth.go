@@ -75,7 +75,7 @@ func Login(c *gin.Context) {
         return
     }
 
-    tokenString, err := jwt.Sign(user.Email, user.No)
+    tokenString, err := jwt.Sign(&user)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
     }

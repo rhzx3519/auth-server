@@ -17,7 +17,6 @@ func init() {
         log.Fatal("Error loading .env file")
     }
 
-    mysql.InitDB()
 }
 
 // This is used to avoid cors(request different domains) problem from the client
@@ -35,6 +34,11 @@ func corsHeader(c *gin.Context) {
 }
 
 func main() {
+    mysql.InitDB()
+    defer func() {
+        mysql.PostDB()
+    }()
+
     r := gin.Default()
     r.Use(corsHeader)
 

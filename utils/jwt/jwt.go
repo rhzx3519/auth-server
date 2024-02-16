@@ -3,6 +3,7 @@ package jwt
 import (
     "fmt"
     "github.com/golang-jwt/jwt/v5"
+    "github.com/rhzx3519/auth-server/domain"
     "time"
 )
 
@@ -10,12 +11,13 @@ var jwtSecretKey = []byte("dksjfl93Dds@#@$!sdasd@!#DSSAD")
 
 const EXPIRED_DURATION = time.Hour * 24
 
-func Sign(email, no string) (string, error) {
+func Sign(user *domain.User) (string, error) {
     token := jwt.NewWithClaims(jwt.SigningMethodHS256,
         jwt.MapClaims{
-            "email": email,
-            "no":    no,
-            "exp":   time.Now().Add(EXPIRED_DURATION).Unix(),
+            "email":    user.Email,
+            "no":       user.No,
+            "nickname": user.Nickname,
+            "exp":      time.Now().Add(EXPIRED_DURATION).Unix(),
         })
     return token.SignedString(jwtSecretKey)
 }
