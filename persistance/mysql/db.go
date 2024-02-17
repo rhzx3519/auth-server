@@ -28,6 +28,7 @@ func InitDB() {
         Addr:                 fmt.Sprintf("%s:%s", getenv("DBHOST", "127.0.0.1"), getenv("DBPORT", "3306")),
         DBName:               "demo-brokers",
         AllowNativePasswords: true,
+        ParseTime:            true,
     }
     fmt.Println(cfg.FormatDSN())
     // Get a DB handler

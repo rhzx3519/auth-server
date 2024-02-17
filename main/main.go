@@ -6,7 +6,7 @@ import (
     "github.com/joho/godotenv"
     "github.com/rhzx3519/auth-server/controllers/auth"
     "github.com/rhzx3519/auth-server/persistance/mysql"
-    "log"
+    log "github.com/sirupsen/logrus"
     "net/http"
     "os"
 )
@@ -17,6 +17,11 @@ func init() {
         log.Fatal("Error loading .env file")
     }
 
+    {
+        log.SetFormatter(&log.TextFormatter{DisableColors: false})
+        log.SetOutput(os.Stdout)
+        log.SetLevel(log.DebugLevel)
+    }
 }
 
 // This is used to avoid cors(request different domains) problem from the client

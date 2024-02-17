@@ -8,6 +8,7 @@ import (
     userDB "github.com/rhzx3519/auth-server/persistance/user"
     "github.com/rhzx3519/auth-server/utils/jwt"
     "github.com/rhzx3519/auth-server/utils/salt"
+    log "github.com/sirupsen/logrus"
     "net/http"
 )
 
@@ -63,6 +64,7 @@ func Login(c *gin.Context) {
     var json LoginData
     var err error
     if err = c.ShouldBindJSON(&json); err != nil {
+        log.WithError(err).Error("failed to parse json body")
         c.JSON(http.StatusBadRequest, gin.H{
             "error": err.Error(),
         })
@@ -70,8 +72,9 @@ func Login(c *gin.Context) {
     }
 
     var user domain.User
-    if user, err = userDB.GetUserbyEmailAndPassword(json.Email, salt.MD5(json.Password)); err != nil {
-        c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
+    if user, err = userDB.FindUser(json.Email, salt.MD5(json.Password)); err != nil {
+        log.WithError(err).Error("no matched user is found")
+        c.JSON(http.StatusUnauthorized, gin.H{"message": "no matched user is found"})
         return
     }
 

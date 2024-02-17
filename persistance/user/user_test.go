@@ -1,12 +1,19 @@
 package user
 
 import (
-	"gotest.tools/v3/assert"
-	"testing"
+    "github.com/rhzx3519/auth-server/persistance/mysql"
+    "github.com/rhzx3519/auth-server/utils/salt"
+    "gotest.tools/v3/assert"
+    "testing"
 )
 
 func TestGetUserbyEmailAndPassword(t *testing.T) {
-	user, err := GetUserbyEmailAndPassword("admin@gmail.com", "123456")
-	assert.NilError(t, err)
-	assert.Equal(t, user.Nickname, "admin")
+    mysql.InitDB()
+    defer func() {
+        mysql.PostDB()
+    }()
+
+    user, err := FindUser("lou@gmail.com", salt.MD5("123456"))
+    assert.NilError(t, err)
+    assert.Equal(t, user.Nickname, "lou")
 }
